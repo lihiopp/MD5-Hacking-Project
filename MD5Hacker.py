@@ -1,7 +1,6 @@
 import socket, threading, hashlib
 import piro
 
-#check if the code works!!!
 class Patzhan:
     def __init__(self,port):
         self.socket = socket.socket()
@@ -26,10 +25,12 @@ class Patzhan:
             start = msg.split(',')[0]
             stop = msg.split(',')[1]
 
-            #add the new stop and start for the different threads
-            #you need to split the range into two different ones
-            t1_stop ='bbb'
-            t2_start ='bbc'
+            
+            t1_stop =HandleRanges(stop,start)
+            if(t1_stop[2]=='z'):
+                t2_start=chr(ord(t1_stop[0])+1)+"aaaaaaa"
+            else:
+                t2_start =t1_stop[0:7]+chr(ord(t1_stop[7])+1)
         
             results_lst = [None,None] #a list that saves the return values from each thread (true\false, and if true- the found password)
             thread_lst = [None,None]
@@ -108,6 +109,22 @@ class Patzhan:
         
         results_lst[i] = False
         return 
+    
+    def HandleRanges(stop,start):
+        int_to_char=[ord(stop[0])+ord(start[0]),ord(stop[1])+ord(start[1]),ord(stop[2])+ord(start[2]),ord(stop[3])+ord(start[3]),ord(stop[4])+ord(start[4]),ord(stop[5])+ord(start[5]),ord(stop[6])+ord(start[6]),ord(stop[7])+ord(start[7])]
+        change=False
+        for i in range(len(int_to_char)):
+            x=int_to_char[i]
+            if(change==False):
+                if(x/2!=int(x/2)):
+                    change=True
+                x=int(x/2)
+            else:
+                if(x/2==int(x/2)):
+                    change=False
+                x=int((x+26)/2)
+            int_to_char[i]=x
+        return (chr(int_to_char[0])+chr(int_to_char[1])+chr(int_to_char[2])+chr(int_to_char[3])+chr(int_to_char[4])+chr(int_to_char[5])+chr(int_to_char[6])+chr(int_to_char[7]))## end of thread1, to get startof thread2 just add to the ascii +1
 
 if __name__=="__main__":
     pz = Patzhan(12345)
