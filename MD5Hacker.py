@@ -1,5 +1,6 @@
 import socket, threading, hashlib
 import Piro
+import time
 
 class Patzhan:
     def __init__(self):
@@ -21,10 +22,11 @@ class Patzhan:
         print("server connected")
         Patzhan.start_hacking(self,id1)
 
-    def start_hacking(self,id):
+    def start_hacking(self,id1):
         msg = self.clientSoc.recv(1024).decode()
-        print(msg)
-        while True:                
+        self.finished =[True,True]
+        while True:
+            print(msg)
             md5 = msg.split(',')[2]
             start = msg.split(',')[0]
             stop = msg.split(',')[1]
@@ -49,12 +51,12 @@ class Patzhan:
             for i in thread_lst: #keeps the threads alive until the main thread finishes
                 i.join()
         
-            answer_str = str(id) + "," #the string that needs to be returned to the server at the end of the search
+            answer_str = str(id1) + "," #the string that needs to be returned to the server at the end of the search
             
             if (results_lst[0]==True) or (results_lst[1]==True): #if one of the threads found the password- return true to the server
                 answer_str += str(True) + "," + str(md5) + "," + str(results_lst[2])
             else:
-                answer_str += str(False) + "," + str(md5) + "," + ""
+                answer_str += str(False) + "," + str(md5) + ","
             
             print(answer_str)
             self.clientSoc.send(answer_str.encode())
@@ -74,9 +76,14 @@ class Patzhan:
         s='a'
         ok=True
 
-        while ok:
+        while self.finished[i]:
+            print(hashlib.md5(start.encode()).hexdigest())
+            print(start)
+            time.sleep(0.5)
             if(hashlib.md5(start.encode()).hexdigest()== md5):
                 results_lst[i] = True
+                for stop in self.finished:
+                    stop=False
                 results_lst.append(start) #adds the found password to the result list
                 return 
             index=1
@@ -120,5 +127,4 @@ class Patzhan:
 
 if __name__=="__main__":
     pz = Patzhan()
-    while True:
-        pz.reconnect()
+    pz.reconnect()
