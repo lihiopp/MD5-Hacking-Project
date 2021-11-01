@@ -36,8 +36,7 @@ class Server:
         found=answer.split(",")[1]
         if(found=="True"):
             self.socket.send(("finish," + self.md5).encode()) #sends finish
-        #else:
-         #   Server.unique_connection(self)# not completed, needs repairing.
+
 
 def main():
     server = Server("127.0.0.1",13370)
