@@ -25,9 +25,9 @@ class Server:
         self.socket.connect(("127.0.0.1",port_addr))
 
     def unique_connection(self):
-        start="aaa"
-        stop="ccc"
-        self.md5 = "1921f9e1416473a1d0f15d328e837115"
+        start="aaaaaaaa"
+        stop="cccccccc"
+        self.md5 = "c9e1a482c67069fc92cea8ca55327c01"
         self.socket.send((start + "," + stop + "," + self.md5).encode())
         
     def get_answer(self):
@@ -35,7 +35,7 @@ class Server:
         print(answer)
         found=answer.split(",")[1]
         if(found=="True"):
-            self.socket.send(("FINISH," + self.md5).encode()) #sends finish
+            self.socket.send(("finish," + self.md5).encode()) #sends finish
         #else:
          #   Server.unique_connection(self)# not completed, needs repairing.
 
