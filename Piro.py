@@ -1,5 +1,6 @@
 import screen_brightness_control as sbc
 from playsound import playsound
+#import pygame
 
 
 def brighten_screen():
@@ -19,7 +20,14 @@ def screen_brightness():
 
 
 def sound_effect():
-    playsound('C:\\Users\\amitw\\Desktop\\sound_effect_wav.wav')
+    playsound('C:\\Users\\student\\Desktop\\asfghjkl\\sound_effect.wav')
+    '''
+    soundObj = pygame.mixer.Sound('C:\\Users\\amitw\\Desktop\\sound_effect_wav.wav')
+    soundObj.play()
+    import time
+    time.sleep(5) # wait and let the sound play for 1 second
+    soundObj.stop()
+'''
 
 
 def main():
